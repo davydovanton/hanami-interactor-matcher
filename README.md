@@ -20,6 +20,41 @@ Or install it yourself as:
     $ gem install hanami-interactor-matcher
 
 ## Usage
+```ruby
+class Operation
+  include Hanami::Interactor
+  expose :value
+
+  def call(condition: true)
+    if condition
+      @value = 'hello'
+    else
+      @value = 'error'
+      fail!
+    end
+  end
+end
+
+Operation.new.call(condition: true) do |m|
+  m.success do |v|
+    puts "Yay: #{v}"
+  end
+
+  m.failure do |v|
+    puts "Boo: #{v}"
+  end
+end
+
+Operation.new.call(condition: false) do |m|
+  m.success do |v|
+    puts "Yay: #{v}"
+  end
+
+  m.failure do |v|
+    puts "Boo: #{v}"
+  end
+end
+```
 
 
 ## Development
