@@ -1,7 +1,6 @@
-require 'support/interactors' 
+require 'support/interactors'
 
-RSpec.describe 'Interactor class' do
-  let(:matcher) { Hanami::Interactor::Matcher::MatcherObject }
+RSpec.describe Hanami::Interactor::Matcher::MatcherObject do
   let(:matcher_block) do
     -> (m) do
       m.success { |v| "Yay: #{v}" }
@@ -9,7 +8,7 @@ RSpec.describe 'Interactor class' do
     end
   end
 
-  subject { matcher.(interactor.call, &matcher_block) }
+  subject { described_class.(interactor.call, &matcher_block) }
 
   context 'when interactor successful' do
     let(:interactor) { Interactors::Success.new }
