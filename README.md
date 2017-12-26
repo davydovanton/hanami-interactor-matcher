@@ -20,6 +20,8 @@ Or install it yourself as:
     $ gem install hanami-interactor-matcher
 
 ## Usage
+For exampe you have simple interactor class:
+
 ```ruby
 class Operation
   include Hanami::Interactor
@@ -34,34 +36,53 @@ class Operation
     end
   end
 end
-
-Operation.new.call(condition: true) do |m|
-  m.success do |v|
-    puts "Yay: #{v}"
-  end
-
-  m.failure do |v|
-    puts "Boo: #{v}"
-  end
-end
-
-Operation.new.call(condition: false) do |m|
-  m.success do |v|
-    puts "Yay: #{v}"
-  end
-
-  m.failure do |v|
-    puts "Boo: #{v}"
-  end
-end
 ```
 
+### Matcher mixin
+You can use special mixin `Hanami::Interactor::Matcher::Mixin` which provide `#matcher` method.
+It will be useful in actions:
 
-## Development
+```ruby
+module Action
+  class Index
+    include Hanami::Interactor::Matcher::Mixin
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+    def initialize(operation: Operation.new)
+      @operation = operation
+    end
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+    def call(params)
+      result = @operation.call(params)
+
+      match(result) do |m|
+        m.success { |v| "Yay: #{v}" }
+        m.failure { |v| "Boo: #{v}" }
+      end
+    end
+  end
+end
+
+action = Action::Index.new
+action.call(condition: true) # => 'Yay: hello'
+action.call(condition: false) # => 'Boo: error'
+```
+
+### Call injection
+We use simple monkey patching for updating `#call` method:
+
+```ruby
+Operation.new.call(condition: true) do |m|
+  m.success { |v| puts "Yay: #{v}" }
+  m.failure { |v| puts "Boo: #{v}" }
+end
+# => 'Yay: hello'
+
+Operation.new.call(condition: false) do |m|
+  m.success { |v| puts "Yay: #{v}" }
+  m.failure { |v| puts "Boo: #{v}" }
+end
+# => 'Boo: error'
+```
 
 ## Contributing
 
