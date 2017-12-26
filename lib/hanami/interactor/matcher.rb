@@ -1,4 +1,4 @@
-require "hanami/interactor/matcher/version"
+require 'hanami/interactor/matcher/version'
 require 'hanami/interactor'
 require 'dry-matcher'
 
