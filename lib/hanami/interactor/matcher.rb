@@ -1,6 +1,7 @@
-require 'hanami/interactor/matcher/version'
-require 'hanami/interactor'
 require 'dry-matcher'
+require 'hanami/interactor'
+require 'hanami/interactor/matcher/mixin'
+require 'hanami/interactor/matcher/version'
 
 module Hanami
   module Interactor
