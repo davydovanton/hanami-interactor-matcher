@@ -1,5 +1,3 @@
-require 'hanami/interactor'
-
 module Interactors
   class Success
     include Hanami::Interactor

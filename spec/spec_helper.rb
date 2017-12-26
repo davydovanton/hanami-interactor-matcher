@@ -1,3 +1,4 @@
+require 'hanami/interactor'
 require 'hanami/interactor/matcher'
 
 RSpec.configure do |config|
