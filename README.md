@@ -1,5 +1,7 @@
 # Hanami::Interactor::Matcher
 
+**This repository is no longer maintain**
+
 Simple dry-matcher class for working with hanami interactor results
 
 
